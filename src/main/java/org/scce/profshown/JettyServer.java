@@ -1,37 +1,41 @@
 package org.scce.profshown;
 
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.util.log.StdErrLog;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.util.thread.ThreadPool;
 
 import java.net.InetSocketAddress;
 
 //Fixed
 public class JettyServer {
-    private Server server;
+    private final Server server;
+
+    private final int ACCEPT_QUEUE_SIZE = 10;
+    private final int MAX_THREADS = 200;
+    private final int IDLE_TIMEOUT = 60000;
 
     public JettyServer() {
         this(8001);
     }
 
-    public JettyServer(int runningPort) {
-        HttpConfiguration httpConfig = new HttpConfiguration();
-        httpConfig.setSendServerVersion(false); // 禁止发送服务器版本信息
-
-        server = new Server(runningPort);
-        ServerConnector connector = new ServerConnector(server, new HttpConnectionFactory(httpConfig));
+    private void JServConfigSimp(Server server){
+        ServerConnector connector = new ServerConnector(server);
+        connector.setAcceptQueueSize(ACCEPT_QUEUE_SIZE);
+        connector.setIdleTimeout(IDLE_TIMEOUT);
+        connector.setReuseAddress(false);
+        QueuedThreadPool qThread = server.getBean(QueuedThreadPool.class);
+        qThread.setMaxThreads(MAX_THREADS);
         server.addConnector(connector);
     }
-    public JettyServer(InetSocketAddress socketAddress){
-        HttpConfiguration httpConfig = new HttpConfiguration();
-        httpConfig.setSendServerVersion(false); // 禁止发送服务器版本信息
 
+    public JettyServer(int runningPort) {
+        this(new InetSocketAddress("0.0.0.0",runningPort));
+    }
+    public JettyServer(InetSocketAddress socketAddress){
         server = new Server(socketAddress);
-        ServerConnector connector = new ServerConnector(server, new HttpConnectionFactory(httpConfig));
-        server.addConnector(connector);
+        JServConfigSimp(server);
     }
 
     public void setHandler(ContextHandlerCollection contexts) {

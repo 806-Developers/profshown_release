@@ -1,5 +1,6 @@
 package org.scce.profshown;
 
+import com.fasterxml.jackson.core.io.IOContext;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.scce.profshown.admin.AuthenticationServlet;
 import org.scce.profshown.admin.SqlExecServlet;
@@ -11,6 +12,7 @@ import org.scce.profshown.apiv0.NotSupportedServlet;
 import org.scce.profshown.utils.InitialConfiguration;
 import org.scce.profshown.utils.LocalTools;
 import org.scce.profshown.utils.SqliteDbHelper;
+import org.scce.profshown.utils.SqliteIOCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +41,8 @@ public class AppEntry {
         catch (Exception e){
 
         }
+
+        SqliteIOCache.getCache().refreshCache();
 
         InetSocketAddress addr = new InetSocketAddress(
                 InitialConfiguration.InitConfig.getHostName(),

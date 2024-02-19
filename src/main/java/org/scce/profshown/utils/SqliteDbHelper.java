@@ -13,7 +13,7 @@ import java.util.Objects;
 
 //Fixed
 public class SqliteDbHelper {
-    public static void justDoDatabaseInit() throws SQLException {
+    public static void justDoDatabaseInit() throws Exception {
         File f = new File(InitialConfiguration.InitConfig.getDatabaseFileName());
         if(f.exists()) throw new RuntimeException("Database file has already exists.");
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + InitialConfiguration.InitConfig.getDatabaseFileName());
@@ -70,13 +70,14 @@ public class SqliteDbHelper {
                 "END";
         state.executeUpdate(sql);
         conn.close();
+        SqliteIOCache.getCache().refreshCache();
     }
     private static String[] stringToStrings(String s,String r){
         if(Objects.isNull(s) || s.isEmpty()) return null;
         return s.replace(" ","").split(r);
     }
     public static ArrayList<ProfDetail> getProfessors() throws SQLException {
-        ArrayList<ProfDetail> list = new ArrayList<ProfDetail>();
+        ArrayList<ProfDetail> list = new ArrayList<>(10000);
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + InitialConfiguration.InitConfig.getDatabaseFileName());
         Statement statement = conn.createStatement();
         String sql = "SELECT * FROM \"professors\" ORDER BY id ASC;";
@@ -108,7 +109,7 @@ public class SqliteDbHelper {
         return list;
     }
     public static ArrayList<Department> getDepartments() throws SQLException {
-        ArrayList<Department> list = new ArrayList<Department>();
+        ArrayList<Department> list = new ArrayList<>(100);
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + InitialConfiguration.InitConfig.getDatabaseFileName());
         Statement statement = conn.createStatement();
         String sql = "SELECT * FROM \"departments\" ORDER BY id ASC;";
@@ -125,7 +126,7 @@ public class SqliteDbHelper {
         return list;
     }
     public static Map<String,String> fetchDepartmentHashMap() throws SQLException {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(100);
         ArrayList<Department> list = getDepartments();
         for(var item : list){
             map.put(item.getDigest(),item.getContent());
@@ -133,7 +134,7 @@ public class SqliteDbHelper {
         return map;
     }
     public static ArrayList<Title> getTitles() throws SQLException {
-        ArrayList<Title> list = new ArrayList<Title>();
+        ArrayList<Title> list = new ArrayList<>(100);
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + InitialConfiguration.InitConfig.getDatabaseFileName());
         Statement statement = conn.createStatement();
         String sql = "SELECT * FROM \"titles\" ORDER BY id ASC;";
@@ -150,18 +151,20 @@ public class SqliteDbHelper {
         return list;
     }
     public static Map<String,String> fetchTitleHashMap() throws SQLException {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(100);
         ArrayList<Title> list = getTitles();
         for(var item : list){
             map.put(item.getDigest(),item.getContent());
         }
         return map;
     }
-    public static int SqlExecutor(String sql) throws SQLException {
-        ArrayList<Department> list = new ArrayList<Department>();
+    public static int SqlExecutor(String sql) throws Exception {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + InitialConfiguration.InitConfig.getDatabaseFileName());
         Statement statement = conn.createStatement();
         int results = statement.executeUpdate(sql);
+        conn.close();
+        SqliteIOCache.getCache().modifiedCounterTick();
+        SqliteIOCache.getCache().refreshCache();
         return results;
     }
 //    public static int RemoveProfessor(int id) throws SQLException {

@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="scce_profshown_final" />
+        <module name="scce_profshown_optimized" />
       </profile>
     </annotationProcessing>
   </component>

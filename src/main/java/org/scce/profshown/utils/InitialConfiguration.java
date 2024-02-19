@@ -20,6 +20,17 @@ public class InitialConfiguration {
     @JsonProperty("HostConstraint")
     private String hostConstraint;
 
+    public int getAsyncTimeOut() {
+        return asyncTimeOut;
+    }
+
+    public void setAsyncTimeOut(int asyncTimeOut) {
+        this.asyncTimeOut = asyncTimeOut;
+    }
+
+    @JsonProperty("asyncTimeOut")
+    private int asyncTimeOut;
+
     public InitialConfiguration(){
         hostName = "0.0.0.0";
         port = 8001;
@@ -27,6 +38,7 @@ public class InitialConfiguration {
         adminName = "admin";
         adminPassword = "123456";
         hostConstraint = "";
+        asyncTimeOut = 60000;
     }
     public String getHostName(){
         return this.hostName;
