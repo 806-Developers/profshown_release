@@ -46,7 +46,7 @@ public class FacultyDigestServlet extends HttpServlet {
                         if(pageIndex <= 0) throw new Exception();
                     }
                     catch(RuntimeException e){
-                        pageIndex = -1;
+                        pageIndex = Integer.MIN_VALUE;
                     }
                     try{
                         if(Objects.isNull(pageSizeStr)) throw new RuntimeException();
@@ -54,10 +54,10 @@ public class FacultyDigestServlet extends HttpServlet {
                         if(pageSize <= 0) throw new Exception();
                     }
                     catch(RuntimeException e){
-                        pageSize = 10000;
+                        pageSize = Integer.MIN_VALUE;
                     }
-                    if(pageIndex > 0) pageSize = 20;
-                    if(pageIndex == -1) pageIndex = 1;
+                    if(pageSize == Integer.MIN_VALUE) pageSize = 20;
+                    if(pageIndex == Integer.MIN_VALUE) pageIndex = 1;
                 }
                 catch (Exception e) {
                     wrongArgFormatTmpHandler(response, returnResult);
