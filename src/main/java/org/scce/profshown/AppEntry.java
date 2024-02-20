@@ -62,6 +62,8 @@ public class AppEntry {
     private static void registerRoute(ServletContextHandler contextHandler){
         //filter for auth spider and contentType
         contextHandler.addFilter(AllFilter.class, "/*", null);
+        contextHandler.addFilter(FrontFilter.class,"/auth/*", null);
+        contextHandler.addFilter(FrontFilter.class,"/sql_exec/*", null);
         contextHandler.addFilter(FrontFilter.class,"/api/v1/*", null);
         //apiv1 routes
         contextHandler.addServlet(DepartmentServlet.class, "/api/v1/departments");
