@@ -20,6 +20,8 @@ import java.io.File;
 import java.net.InetSocketAddress;
 import java.sql.SQLException;
 
+import javax.management.Query;
+
 public class AppEntry {
     private static final Logger logger = LoggerFactory.getLogger(AppEntry.class);
     public static void main(String[] args) throws Exception {
@@ -34,7 +36,6 @@ public class AppEntry {
             InitialConfiguration.InitConfig = new InitialConfiguration();
             LocalTools.createConfigTemplate();
         }
-
         try{
             SqliteDbHelper.justDoDatabaseInit();
         }
@@ -70,6 +71,7 @@ public class AppEntry {
         contextHandler.addServlet(TitleServlet.class, "/api/v1/titles");
         contextHandler.addServlet(FacultyDigestServlet.class, "/api/v1/faculty/list");
         contextHandler.addServlet(FacultyDetailServlet.class, "/api/v1/faculty/detail/*");
+        contextHandler.addServlet(QueryServlet.class, "/api/v1/query");
         //apis not supported
         contextHandler.addServlet(NotSupportedServlet.class, "/api/*");
         //admin routes

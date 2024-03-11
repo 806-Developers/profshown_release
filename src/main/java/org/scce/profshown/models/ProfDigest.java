@@ -19,9 +19,13 @@ public class ProfDigest {
     private String[] title;
     @JsonProperty("positions")
     private String positions;
+    @JsonProperty("researchDirections")
+    private String[] researchDirections;
     public static ProfDigest createProfDigest(ProfDetail professor){
         return new ProfDigest(professor);
     }
+
+
 
     public ProfDigest(ProfDetail professor) {
         this.id = professor.getId();
@@ -31,8 +35,16 @@ public class ProfDigest {
         this.department = professor.getDepartment();
         this.title = professor.getTitle();
         this.positions = professor.getPositions();
+        this.researchDirections = professor.getResearchDirections().replaceAll(" ", "").split(",");
     }
-    public ProfDigest(int id, String name, String foreignName, String avatar, String[] department, String[] title, String positions) {
+    public ProfDigest(int id, 
+                String name, 
+                String foreignName, 
+                String avatar, 
+                String[] department, 
+                String[] title, 
+                String positions,
+                String[] researchDirections) {
         this.id = id;
         this.name = name;
         this.foreignName = foreignName;
@@ -40,6 +52,7 @@ public class ProfDigest {
         this.department = department != null ? department : new String[0];;
         this.title = title != null ? title : new String[0];;
         this.positions = positions;
+        this.researchDirections = researchDirections != null ? researchDirections : new String[0];;
     }
 
     @JsonProperty("id")
