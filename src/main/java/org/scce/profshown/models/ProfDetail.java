@@ -21,6 +21,8 @@ public class ProfDetail{
     private String foreignName;
     @JsonProperty("avatar")
     private String avatar;
+    @JsonProperty("acronym")
+    private String acronym;
 
     @JsonProperty("department")
     public String[] getDepartment() {
@@ -35,9 +37,10 @@ public class ProfDetail{
     private String[] dep;
     @JsonIgnore
     private String[] department;
-    public ProfDetail(int id, String name, String foreignName, String avatar, String[] department, String[] title, String positions, String officeLocation, String officePhoneNumber, String email, String undergraduateCourses, String graduateCourses, String researchDirections, String partTimeJobs, String resume, String[] papers, String[] performance, String[] rewards) {
+    public ProfDetail(int id, String name, String acronym, String foreignName, String avatar, String[] department, String[] title, String positions, String officeLocation, String officePhoneNumber, String email, String undergraduateCourses, String graduateCourses, String researchDirections, String partTimeJobs, String resume, String[] papers, String[] performance, String[] rewards) {
         this.id = id;
         this.name = name;
+        this.acronym = acronym;
         this.foreignName = foreignName;
         this.avatar = avatar;
         this.department = department != null ? department : new String[0];
@@ -131,6 +134,15 @@ public class ProfDetail{
         this.name = name;
     }
 
+    @JsonProperty("acronym")
+    public String getAcronym() {
+        return acronym;
+    }
+
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
+    }
+    
     @JsonProperty("foreignName")
     public String getForeignName() {
         return foreignName;

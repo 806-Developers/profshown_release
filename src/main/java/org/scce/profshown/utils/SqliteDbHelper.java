@@ -1,17 +1,12 @@
 package org.scce.profshown.utils;
 
-import org.eclipse.jetty.server.RequestLog.Collection;
 import org.scce.profshown.models.Department;
 import org.scce.profshown.models.ProfDetail;
 import org.scce.profshown.models.ProfDigest;
 import org.scce.profshown.models.Title;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -92,6 +87,7 @@ public class SqliteDbHelper {
             ProfDetail prof = new ProfDetail(
                     results.getInt("id"),
                     results.getString("name"),
+                    results.getString("acronym"),
                     results.getString("foreignName"),
                     results.getString("avatar"),
                     stringToStrings(results.getString("department"),","),

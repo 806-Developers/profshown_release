@@ -2,7 +2,6 @@ package org.scce.profshown.apiv1;
 
 import org.scce.profshown.models.*;
 import org.scce.profshown.utils.*;
-import org.scce.profshown.utils.SqliteIOCache;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -34,6 +33,7 @@ public class FacultyDigestServlet extends HttpServlet {
                 ProfDigestReturn returnResult = new ProfDigestReturn();
                 String departmentMD5 = request.getParameter("department");
                 String titleMD5 = request.getParameter("title");
+                String nameInitialCap = request.getParameter("initialCap");
                 String profName = request.getParameter("name");
                 String pageIndexStr = request.getParameter("index");
                 String pageSizeStr = request.getParameter("count");
@@ -79,31 +79,36 @@ public class FacultyDigestServlet extends HttpServlet {
                     ArrayList<ProfDigest> digest;
                     ArrayList<ProfDetail> list = SqliteIOCache.getCache().getProfessors();
                     ArrayList<ProfDetail> tempDeepCopy = new ArrayList<>(10000);
-                    //按姓名查找
+                    
                     if(!Objects.isNull(profName) && !profName.isEmpty()){
+                        // 按姓名查找
                         for(ProfDetail item : list)
                             if(Objects.equals(item.getName(),profName) || Objects.equals(item.getForeignName(),profName))
                                 tempDeepCopy.add(item);
                         list = tempDeepCopy;
-                    }
-                    else{
-                        if(!Objects.isNull(departmentMD5) && !departmentMD5.isEmpty()){
-                            for(ProfDetail item : list){
-                                var itsDepartments = Arrays.asList(item.getDepartmentInternal());
-                                if(itsDepartments.contains(departmentMD5))
-                                    tempDeepCopy.add(item);
-                            }
-                            list = tempDeepCopy;
-                            tempDeepCopy = new ArrayList<>(10000);
+                    } else if(!Objects.isNull(nameInitialCap) && !nameInitialCap.isEmpty()){
+                        // 按首字母查找
+                        for(ProfDetail item : list)
+                            if(Objects.equals(item.getAcronym().substring(0,1), nameInitialCap.toLowerCase()))
+                                tempDeepCopy.add(item);
+                        list = tempDeepCopy;
+                    } else if(!Objects.isNull(departmentMD5) && !departmentMD5.isEmpty()){
+                        // 按系所查找
+                        for(ProfDetail item : list){
+                            var itsDepartments = Arrays.asList(item.getDepartmentInternal());
+                            if(itsDepartments.contains(departmentMD5))
+                                tempDeepCopy.add(item);
                         }
-                        if(titleMD5 != null && !titleMD5.isEmpty()){
-                            for(ProfDetail item : list){
-                                var itsTitles = Arrays.asList(item.getTitleInternal());
-                                if(itsTitles.contains(titleMD5))
-                                    tempDeepCopy.add(item);
-                            }
-                            list = tempDeepCopy;
+                        list = tempDeepCopy;
+                        tempDeepCopy = new ArrayList<>(10000);
+                    } else if(titleMD5 != null && !titleMD5.isEmpty()) {
+                        // 按职称查找
+                        for(ProfDetail item : list){
+                            var itsTitles = Arrays.asList(item.getTitleInternal());
+                            if(itsTitles.contains(titleMD5))
+                                tempDeepCopy.add(item);
                         }
+                        list = tempDeepCopy;
                     }
                     digest = LocalTools.listDigest(list);
                     returnResult.setTotal(digest.size());

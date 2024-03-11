@@ -4,8 +4,6 @@ import org.scce.profshown.models.Department;
 import org.scce.profshown.models.ProfDetail;
 import org.scce.profshown.models.Title;
 
-import javax.swing.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SqliteIOCache {

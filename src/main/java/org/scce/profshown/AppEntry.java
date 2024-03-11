@@ -69,6 +69,7 @@ public class AppEntry {
         //apiv1 routes
         contextHandler.addServlet(DepartmentServlet.class, "/api/v1/departments");
         contextHandler.addServlet(TitleServlet.class, "/api/v1/titles");
+        // contextHandler.addServlet(InitialCaps.class, "/api/v1/initial-caps");
         contextHandler.addServlet(FacultyDigestServlet.class, "/api/v1/faculty/list");
         contextHandler.addServlet(FacultyDetailServlet.class, "/api/v1/faculty/detail/*");
         contextHandler.addServlet(QueryServlet.class, "/api/v1/query");

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 @WebServlet(asyncSupported = true)
 public class DepartmentServlet extends HttpServlet {
+    // 系所
     @Override
     public void init() throws ServletException {
         super.init();

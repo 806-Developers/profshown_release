@@ -1,14 +1,11 @@
 package org.scce.profshown.apiv1;
 
-import org.scce.profshown.models.Department;
 import org.scce.profshown.models.KvpReturn;
 import org.scce.profshown.models.LeaveMe;
 import org.scce.profshown.models.Title;
 import org.scce.profshown.utils.*;
 
 import javax.servlet.AsyncContext;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet(asyncSupported = true)
 public class TitleServlet extends HttpServlet {
+    // 职称
     @Override
     public void init() throws ServletException {
         super.init();
@@ -35,7 +32,6 @@ public class TitleServlet extends HttpServlet {
                 var response = asyncContext.getResponse();
                 KvpReturn kvpReturn = new KvpReturn();
                 try {
-                    var writer = response.getWriter();
                     SqliteIOCache.getCache().refreshCache();
                     ArrayList<Title> list = SqliteIOCache.getCache().getTitles();
                     kvpReturn.setCode(StatusCode.API_SUCCESS);

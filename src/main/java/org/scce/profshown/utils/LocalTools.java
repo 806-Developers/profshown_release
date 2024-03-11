@@ -1,19 +1,15 @@
 package org.scce.profshown.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.scce.profshown.models.ProfDetail;
 import org.scce.profshown.models.ProfDigest;
 
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LocalTools {
@@ -68,7 +64,6 @@ public class LocalTools {
     public static String stringToMD5(String s){
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            String psw;
             md5.update(s.getBytes("UTF-8"));
             byte[] encryption = md5.digest();
 
