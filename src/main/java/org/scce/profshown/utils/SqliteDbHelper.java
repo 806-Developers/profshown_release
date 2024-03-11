@@ -166,7 +166,8 @@ public class SqliteDbHelper {
         Statement statement = conn.createStatement();
         String sql = "";
         System.out.println("[queryProfs] Query: " + query + " Via: " + via);
-        if(via == null || via.isEmpty() || (!via.equals("name") && !via.equals("foreignName") && !via.equals("acronym") && !via.equals("researchDirections"))){
+        if(via == null || via.isEmpty() || (!via.equals("name") && !via.equals("title") && !via.equals("foreignName") && !via.equals("acronym") && !via.equals("researchDirections"))){
+            //默认搜索
             String sqlTmpl = """
                 SELECT * FROM \"professors\" WHERE 
                     name LIKE '%%%s%%' COLLATE NOCASE OR 

@@ -53,3 +53,24 @@ def regularize_researchDirections():
 #     给 extra_tags 字段添加内容，如：
 #         1. researchDirections 带有 机器学习、人工智能的
 #     '''
+
+
+# 去掉titles的 c9744f45e76d885ae1c74d4f4a934b2e, 后缀
+def remove_titles_suffix():
+    conn = sqlite3.connect('profshown.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, title FROM professors")
+    rows = cursor.fetchall()
+    
+    for row in rows:
+        id = row[0]
+        titles = row[1]
+        if titles is not None:
+            edited = titles
+            if titles.endswith("c9744f45e76d885ae1c74d4f4a934b2e,"):
+                edited = titles.replace("c9744f45e76d885ae1c74d4f4a934b2e,", "")
+            cursor.execute("UPDATE professors SET title = ? WHERE id = ?", (edited, id))
+            conn.commit()
+    conn.close()
+    
+remove_titles_suffix()

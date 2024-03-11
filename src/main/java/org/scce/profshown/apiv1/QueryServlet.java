@@ -29,8 +29,24 @@ public class QueryServlet extends HttpServlet {
                 var response = (HttpServletResponse)asyncContext.getResponse();
                 // 处理 GET 请求
                 ProfDigestReturn ProfDigestRet = new ProfDigestReturn();
-                String query = request.getParameter("query"); // name or foreignName or acronym or department or researchDirections in database column
-                String via = request.getParameter("via");
+                String query = request.getParameter("query");
+                String via = request.getParameter("via"); // name(name, foreignName, acronym), department, researchDirections, title
+                
+                // special judge: title
+                var titles = SqliteIOCache.getCache().getTitles();
+                if(via != null && via.equals("title")) {
+                    if (query.equals("博导")) query = "博士生导师";
+                    // convert to digest
+                    for (var title : titles) {
+                        if (title.getContent().equals(query)) {
+                            query = title.getDigest();
+                            break;
+                        }
+                    }
+                }
+
+                System.out.println("query: " + query + ", via: " + via);
+
                 try {
                     var ret = SqliteDbHelper.queryProfs(query, via);
                     if(ret == null) {
