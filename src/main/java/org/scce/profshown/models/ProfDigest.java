@@ -35,7 +35,7 @@ public class ProfDigest {
         this.department = professor.getDepartment();
         this.title = professor.getTitle();
         this.positions = professor.getPositions();
-        this.researchDirections = professor.getResearchDirections().replaceAll(" ", "").split(",");
+        this.researchDirections = professor.getResearchDirections();
     }
     public ProfDigest(int id, 
                 String name, 
