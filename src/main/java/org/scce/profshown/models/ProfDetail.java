@@ -76,7 +76,7 @@ public class ProfDetail{
         this.email = email;
         this.undergraduateCourses = undergraduateCourses;
         this.graduateCourses = graduateCourses;
-        this.researchDirections = researchDirections;
+        this.researchDirections = researchDirections.split(",");
         this.partTimeJobs = partTimeJobs;
         this.resume = resume;
         this.papers = papers != null ? papers : new String[0];
@@ -234,12 +234,12 @@ public class ProfDetail{
     }
 
     @JsonProperty("researchDirections")
-    public String getResearchDirections() {
+    public String[] getResearchDirections() {
         return researchDirections;
     }
 
     public void setResearchDirections(String researchDirections) {
-        this.researchDirections = researchDirections;
+        this.researchDirections = researchDirections.split(",");
     }
 
     @JsonProperty("partTimeJobs")
@@ -291,7 +291,7 @@ public class ProfDetail{
     @JsonProperty("graduateCourses")
     private String graduateCourses;
     @JsonProperty("researchDirections")
-    private String researchDirections;
+    private String[] researchDirections;
     @JsonProperty("partTimeJobs")
     private String partTimeJobs;
     @JsonProperty("resume")
